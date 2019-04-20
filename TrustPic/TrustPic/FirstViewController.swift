@@ -9,6 +9,7 @@
 import UIKit
 import Just
 
+
 class FirstViewController: UIViewController {
     
     @IBOutlet weak var profilePic: UIImageView!
@@ -20,11 +21,15 @@ class FirstViewController: UIViewController {
     var imgArr: Array<Any> = [];
     var nameArr: Array<String> = [];
     var profArr: Array<String> = [];
+    var pidArr: Array<String> = [];
     var i:Int = 0;
     var maxImg:Int = 0;
     var maxProf:Int = 0;
+    var maxId:Int = 0;
+    var comment:String = "";
     @IBOutlet weak var topName: UILabel!
     @IBOutlet weak var topProfession: UILabel!
+    @IBOutlet weak var topNext: UIButton!
     
     @IBAction func slideHandler(_ sender: ColorSlider) {
         // this function handles the slider color change
@@ -39,15 +44,68 @@ class FirstViewController: UIViewController {
     }
     
     @IBAction func nextImage(_ sender: UIButton) {
+        nextpost();
+    }
+    
+    func nextpost() {
         //This handles loading of next image
+        
         profilePic.downloaded(from: "http://bansalsonia.com/aakashv.me/trustpic/uploads/\(imgArr[i+1])");
         topName.text = nameArr[i+1];
         topProfession.text = profArr[i+1];
+        for rslider in sliders {
+            rslider.value = 5;
+        }
         i = i + 1;
         if (i == (maxImg - 2))
         {
-            sender.isEnabled = false;
+            topNext.isEnabled = false;
         }
+    }
+    
+    @IBAction func ratePic(_ sender: UIButton) {
+        //This function will rate our image
+        var rvalues: Array<Int> = [];
+        for rslider in sliders {
+            rvalues.append(Int(rslider.value));
+        }
+        let picId = pidArr[i];
+         _ = Just.post("http://bansalsonia.com/aakashv.me/trustpic/rateimg.php", data:["pic_id": picId,"rate1":rvalues[0], "rate2": rvalues[1], "rate3": rvalues[2], "rate4": rvalues[3], "comment": comment] )
+        if (i < (maxImg - 2))
+        {
+            nextpost();
+        } else
+        {
+            // create the alert
+            let alert = UIAlertController(title: "Oppsie", message: "Hi! Sorry, but we are out of images currently, Thanks for rating", preferredStyle: UIAlertController.Style.alert)
+            
+            // add an action (button)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+            
+            // show the alert
+            self.present(alert, animated: true, completion: nil)
+        }
+        
+    }
+    
+    @IBAction func addComment(_ sender: UIButton) {
+        //This function add comment to the post request;
+        //1. Create the alert controller.
+        let alert = UIAlertController(title: "Comment", message: "A positive comment will be helpful :)", preferredStyle: .alert)
+        
+        //2. Add the text field. You can configure it however you need.
+        alert.addTextField { (textField) in
+            textField.text = ""
+        }
+        
+        // 3. Grab the value from the text field, and print it when the user clicks OK.
+        alert.addAction(UIAlertAction(title: "Add comment", style: .default, handler: { [weak alert] (_) in
+            let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
+            self.comment = textField?.text ?? "";
+        }))
+        
+        // 4. Present the alert.
+        self.present(alert, animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
@@ -57,12 +115,13 @@ class FirstViewController: UIViewController {
         if r.ok {
             let response:String = r.text ?? "none";
             imgArr = response.components(separatedBy: "#");
-            print(imgArr);
             profilePic.downloaded(from: "http://bansalsonia.com/aakashv.me/trustpic/uploads/\(imgArr[0])");
             maxImg = imgArr.count;
             nameArr = (imgArr[maxImg - 1] as AnyObject).components(separatedBy: "*");
             maxProf = nameArr.count;
             profArr = (nameArr[maxProf - 1] as AnyObject).components(separatedBy: "$");
+            maxId = profArr.count;
+            pidArr = (profArr[maxId - 1] as AnyObject).components(separatedBy: "^");
             topName.text = nameArr[0];
             topProfession.text = profArr[0];
         }
