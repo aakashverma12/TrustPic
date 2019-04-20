@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Just
 
 class FirstViewController: UIViewController {
     
@@ -16,6 +17,14 @@ class FirstViewController: UIViewController {
     @IBOutlet weak var Pic: UILabel!
     @IBOutlet var progs: [UIView]!
     @IBOutlet var sliders: [ColorSlider]!
+    var imgArr: Array<Any> = [];
+    var nameArr: Array<String> = [];
+    var profArr: Array<String> = [];
+    var i:Int = 0;
+    var maxImg:Int = 0;
+    var maxProf:Int = 0;
+    @IBOutlet weak var topName: UILabel!
+    @IBOutlet weak var topProfession: UILabel!
     
     @IBAction func slideHandler(_ sender: ColorSlider) {
         // this function handles the slider color change
@@ -29,11 +38,38 @@ class FirstViewController: UIViewController {
         }
     }
     
+    @IBAction func nextImage(_ sender: UIButton) {
+        //This handles loading of next image
+        profilePic.downloaded(from: "http://bansalsonia.com/aakashv.me/trustpic/uploads/\(imgArr[i+1])");
+        topName.text = nameArr[i+1];
+        topProfession.text = profArr[i+1];
+        i = i + 1;
+        if (i == (maxImg - 2))
+        {
+            sender.isEnabled = false;
+        }
+    }
+    
     override func viewDidLoad() {
-        super.viewDidLoad()
+        super.viewDidLoad();
+        // Let's get the Picposts
+        let r = Just.post("http://bansalsonia.com/aakashv.me/trustpic/getimages.php");
+        if r.ok {
+            let response:String = r.text ?? "none";
+            imgArr = response.components(separatedBy: "#");
+            print(imgArr);
+            profilePic.downloaded(from: "http://bansalsonia.com/aakashv.me/trustpic/uploads/\(imgArr[0])");
+            maxImg = imgArr.count;
+            nameArr = (imgArr[maxImg - 1] as AnyObject).components(separatedBy: "*");
+            maxProf = nameArr.count;
+            profArr = (nameArr[maxProf - 1] as AnyObject).components(separatedBy: "$");
+            topName.text = nameArr[0];
+            topProfession.text = profArr[0];
+        }
         
         profilePic.layer.cornerRadius = 16.0;
         profilePic.layer.masksToBounds = true;
+        
         blackShadow.layer.shadowColor = UIColor.black.cgColor;
         blackShadow.layer.shadowOffset = CGSize(width: 1, height: 3);
         blackShadow.layer.shadowOpacity = 0.36;
@@ -84,3 +120,23 @@ open class ColorSlider : UISlider {
     }
 }
 
+extension UIImageView {
+    func downloaded(from url: URL, contentMode mode: UIView.ContentMode = .scaleAspectFill) {  // for swift 4.2 syntax just use ===> mode: UIView.ContentMode
+        contentMode = mode
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard
+                let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
+                let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
+                let data = data, error == nil,
+                let image = UIImage(data: data)
+                else { return }
+            DispatchQueue.main.async() {
+                self.image = image
+            }
+            }.resume()
+    }
+    func downloaded(from link: String, contentMode mode: UIView.ContentMode = .scaleAspectFill) {  // for swift 4.2 syntax just use ===> mode: UIView.ContentMode
+        guard let url = URL(string: link) else { return }
+        downloaded(from: url, contentMode: mode)
+    }
+}

@@ -251,6 +251,9 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <size key="titleShadowOffset" width="3" height="0.0"/>
                                         <state key="normal" title="Next "/>
+                                        <connections>
+                                            <action selector="nextImage:" destination="9pv-A4-QxB" eventType="touchUpInside" id="9nt-ta-6gs"/>
+                                        </connections>
                                     </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Chevronr" translatesAutoresizingMaskIntoConstraints="NO" id="1w3-4N-7XF">
                                         <rect key="frame" x="50" y="14" width="7" height="15"/>
@@ -315,6 +318,8 @@
                         <outlet property="Pic" destination="Y98-Ld-wwT" id="sIF-cs-Q5I"/>
                         <outlet property="blackShadow" destination="rYO-5G-8jX" id="81N-vF-xR8"/>
                         <outlet property="profilePic" destination="QcY-WR-i59" id="PBm-yO-rZk"/>
+                        <outlet property="topName" destination="A5M-7J-77L" id="5Ag-vW-Axs"/>
+                        <outlet property="topProfession" destination="Cyo-In-Ipv" id="YRx-1v-csP"/>
                         <outlet property="trust" destination="KQZ-1w-vlD" id="Fdi-UA-yuW"/>
                         <outletCollection property="progs" destination="2ut-qf-b3b" collectionClass="NSMutableArray" id="RkJ-fR-DCB"/>
                         <outletCollection property="sliders" destination="IYz-q5-nLi" collectionClass="NSMutableArray" id="C9Y-Ci-g1u"/>
