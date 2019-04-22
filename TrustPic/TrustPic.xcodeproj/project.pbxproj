@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		11157DCC226B1327004E5563 /* Just.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11157DCB226B1327004E5563 /* Just.framework */; };
+		116323AE226C4E3E005E4D6B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116323AD226C4E3E005E4D6B /* LoginViewController.swift */; };
+		116323B2226C5FDF005E4D6B /* VideoBackX.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 116323B1226C5FDF005E4D6B /* VideoBackX.mp4 */; };
 		11CD3846226483630015B39B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CD3845226483630015B39B /* AppDelegate.swift */; };
 		11CD3848226483630015B39B /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CD3847226483630015B39B /* FirstViewController.swift */; };
 		11CD384A226483630015B39B /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CD3849226483630015B39B /* SecondViewController.swift */; };
@@ -66,6 +68,8 @@
 
 /* Begin PBXFileReference section */
 		11157DCB226B1327004E5563 /* Just.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Just.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		116323AD226C4E3E005E4D6B /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		116323B1226C5FDF005E4D6B /* VideoBackX.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = VideoBackX.mp4; sourceTree = "<group>"; };
 		11CD3842226483630015B39B /* TrustPic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrustPic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		11CD3845226483630015B39B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		11CD3847226483630015B39B /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -141,6 +145,7 @@
 		11CD3839226483630015B39B = {
 			isa = PBXGroup;
 			children = (
+				116323B1226C5FDF005E4D6B /* VideoBackX.mp4 */,
 				11CD3844226483630015B39B /* TrustPic */,
 				11CD3843226483630015B39B /* Products */,
 				6928188BE8C8D7ACF5B566CF /* Pods */,
@@ -164,6 +169,7 @@
 				11CD3845226483630015B39B /* AppDelegate.swift */,
 				11CD387622648BE60015B39B /* Resources */,
 				11CD3847226483630015B39B /* FirstViewController.swift */,
+				116323AD226C4E3E005E4D6B /* LoginViewController.swift */,
 				11CD3849226483630015B39B /* SecondViewController.swift */,
 				11CD384B226483630015B39B /* Main.storyboard */,
 				11CD384E226483660015B39B /* Assets.xcassets */,
@@ -335,6 +341,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				116323B2226C5FDF005E4D6B /* VideoBackX.mp4 in Resources */,
 				11CD3852226483660015B39B /* LaunchScreen.storyboard in Resources */,
 				11CD38A622648D1B0015B39B /* SF-Pro-Text-Semibold.otf in Resources */,
 				11CD38A822648D1B0015B39B /* SF-Pro-Display-Heavy.otf in Resources */,
@@ -398,12 +405,14 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrustPic/Pods-TrustPic-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Just/Just.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftVideoBackground/SwiftVideoBackground.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Just.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftVideoBackground.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -439,6 +448,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				116323AE226C4E3E005E4D6B /* LoginViewController.swift in Sources */,
 				11CD384A226483630015B39B /* SecondViewController.swift in Sources */,
 				11CD3846226483630015B39B /* AppDelegate.swift in Sources */,
 				11CD3848226483630015B39B /* FirstViewController.swift in Sources */,

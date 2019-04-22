@@ -27,6 +27,7 @@ class FirstViewController: UIViewController {
     var maxProf:Int = 0;
     var maxId:Int = 0;
     var comment:String = "";
+    var loggedinUser:Int = UserDefaults.standard.integer(forKey: "userId");
     @IBOutlet weak var topName: UILabel!
     @IBOutlet weak var topProfession: UILabel!
     @IBOutlet weak var topNext: UIButton!
@@ -55,6 +56,7 @@ class FirstViewController: UIViewController {
         topProfession.text = profArr[i+1];
         for rslider in sliders {
             rslider.value = 5;
+            rslider.minimumTrackTintColor = UIColor(red:0.33, green:0.64, blue:0.97, alpha:1.0);
         }
         i = i + 1;
         if (i == (maxImg - 2))
@@ -70,7 +72,7 @@ class FirstViewController: UIViewController {
             rvalues.append(Int(rslider.value));
         }
         let picId = pidArr[i];
-         _ = Just.post("http://bansalsonia.com/aakashv.me/trustpic/rateimg.php", data:["pic_id": picId,"rate1":rvalues[0], "rate2": rvalues[1], "rate3": rvalues[2], "rate4": rvalues[3], "comment": comment] )
+        _ = Just.post("http://bansalsonia.com/aakashv.me/trustpic/rateimg.php", data:["pic_id": picId,"rate1":rvalues[0], "rate2": rvalues[1], "rate3": rvalues[2], "rate4": rvalues[3], "comment": comment, "user_id": loggedinUser] )
         if (i < (maxImg - 2))
         {
             nextpost();
@@ -108,6 +110,11 @@ class FirstViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
+    @IBAction func logout(_ sender: UIButton) {
+        UserDefaults.standard.set(-1,forKey: "userId");
+        UserDefaults.standard.set("",forKey: "username");
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad();
         // Let's get the Picposts
@@ -126,8 +133,8 @@ class FirstViewController: UIViewController {
             topProfession.text = profArr[0];
         }
         
-        profilePic.layer.cornerRadius = 16.0;
         profilePic.layer.masksToBounds = true;
+        profilePic.layer.cornerRadius = 16.0;
         
         blackShadow.layer.shadowColor = UIColor.black.cgColor;
         blackShadow.layer.shadowOffset = CGSize(width: 1, height: 3);

@@ -9,15 +9,18 @@
 import UIKit
 import Just
 
-class SecondViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+class SecondViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var blackShadow: UIView!
     @IBOutlet weak var newImg: UIImageView!
     var mod:Int = 0;
     var imagePicker = UIImagePickerController();
+    var loggedinUser:Int = UserDefaults.standard.integer(forKey: "userId");
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.inName.delegate = self;
+        self.inDesc.delegate = self;
         // Do any additional setup after loading the view, typically from a nib.
         imagePicker.delegate = self
         blackShadow.layer.shadowColor = UIColor.black.cgColor;
@@ -27,9 +30,32 @@ class SecondViewController: UIViewController, UINavigationControllerDelegate, UI
         blackShadow.clipsToBounds = false;
         blackShadow.layer.cornerRadius = 16.0;
         newImg.layer.cornerRadius = 16.0;
-        
+        //Keyboard optimizations
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
+    //Keyboard optimizations
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0 {
+                self.view.frame.origin.y -= (keyboardSize.height/2)
+            }
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if self.view.frame.origin.y != 0 {
+            self.view.frame.origin.y = 0
+        }
+    }
+    
+    //Upload Image
     @IBAction func upLoadImageBtnPressed(_ sender: AnyObject) {
         imagePicker.allowsEditing = true
         imagePicker.sourceType = .photoLibrary
@@ -62,7 +88,7 @@ class SecondViewController: UIViewController, UINavigationControllerDelegate, UI
         } else {
             // Do the Magic
             self.showSpinner(onView: self.view)
-            let magic = Just.post("http://bansalsonia.com/aakashv.me/trustpic/insertpost.php", data: ["inName": inName.text ?? "", "prof": inDesc.text ?? "", "user_id": 1]);
+            let magic = Just.post("http://bansalsonia.com/aakashv.me/trustpic/insertpost.php", data: ["inName": inName.text ?? "", "prof": inDesc.text ?? "", "user_id": loggedinUser]);
             if magic.ok {
                 let response:String = magic.text ?? "0";
                 print(magic.text ?? "0")
